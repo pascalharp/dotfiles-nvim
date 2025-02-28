@@ -1,3 +1,6 @@
+-- Load vim.g
+require("config.g").set()
+
 -- Load vim.opt
 require("config.opt").set()
 
