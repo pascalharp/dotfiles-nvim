@@ -1,3 +1,6 @@
+-- Load vim.opt
+require("config.opt").set()
+
 -- Check for lazy.nvim
 
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
