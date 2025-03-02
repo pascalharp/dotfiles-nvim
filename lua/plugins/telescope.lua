@@ -1,21 +1,22 @@
 local tb       = function() return require("telescope.builtin") end
 
-local find     = "<leader>f"
-local lsp      = "<leader>l"
+local kb       = require('config.keybinds')
+local find     = kb.Groups.find
+local lsp      = kb.Groups.lsp
 
 local keybinds = {
     -- find
-    { find .. "f", function() tb().find_files() end,      desc = "[F]iles" },
-    { find .. "g", function() tb().grep_string() end,     desc = "[G]rep" },
-    { find .. "b", function() tb().buffers() end,         desc = "[B]uffers" },
-    { find .. "c", function() tb().commands() end,        desc = "[C]ommands" },
-    { find .. "j", function() tb().jumplist() end,        desc = "[J]umplist" },
-    { find .. "k", function() tb().keymaps() end,         desc = "[k]keymaps" },
-    { find .. "H", function() tb().help_tags() end,       desc = "[H]help tags" },
+    find:bind('f', function() tb().find_files() end, "[F]iles"),
+    find:bind('g', function() tb().grep_string() end, "[G]rep"),
+    find:bind('b', function() tb().buffers() end, "[B]uffers"),
+    find:bind('c', function() tb().commands() end, "[C]ommands"),
+    find:bind('j', function() tb().jumplist() end, "[J]umplist"),
+    find:bind('k', function() tb().keymaps() end, "[k]keymaps"),
+    find:bind('H', function() tb().help_tags() end, "[H]help tags"),
     -- LSP
-    { lsp .. "r",  function() tb().lsp_references() end,  desc = "[R]eferences" },
-    { lsp .. "d",  function() tb().lsp_definitions() end, desc = "[D]efinitions" },
-    { lsp .. "D",  function() tb().lsp_diagnostics() end, desc = "[D]iagnostics" },
+    lsp:bind('r', function() tb().lsp_references() end, "[R]eferences"),
+    lsp:bind('d', function() tb().lsp_definitions() end, "[D]efinitions"),
+    lsp:bind('D', function() tb().lsp_diagnostics() end, "[D]iagnostics"),
 }
 
 return {

@@ -1,0 +1,27 @@
+local M = {}
+
+-- Keybind Groups accessed thorough leader
+M.Groups = {
+    lsp = { key = 'l', desc = '[L]sp' },
+    find = { key = 'f', desc = '[F]ind' },
+}
+
+--@type group M.Groups
+--@type key string
+--@type fn function
+--@type desc string
+function M.group_bind(group, key, fn, desc)
+    return { '<leader>' .. group.key .. key, fn, desc = desc or "" }
+end
+
+-- add enum functions for convenience
+for _, group in pairs(M.Groups) do
+    group.bind = function(self, key, fn, desc)
+        return M.group_bind(self, key, fn, desc)
+    end
+    group.spec = function(self)
+        return { '<leader>' .. self.key, desc = self.desc }
+    end
+end
+
+return M
