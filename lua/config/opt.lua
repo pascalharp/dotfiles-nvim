@@ -1,4 +1,3 @@
-
 local options = {
     number = true,
     mouse = 'a',
