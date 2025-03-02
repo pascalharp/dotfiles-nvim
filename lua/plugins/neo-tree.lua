@@ -3,7 +3,7 @@ local nt_exec = function(opts)
 end
 
 local keybinds = {
-  { "<leader>\\", function() nt_exec({toggle = true }) end, desc = "Togge NeoTree"}
+  { "<leader>\\", function() nt_exec({toggle = true }) end, desc = "Toggle NeoTree"}
 }
 
 return {
