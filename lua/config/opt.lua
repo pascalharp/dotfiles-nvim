@@ -17,7 +17,7 @@ local options = {
 
 local M = {}
 
-M.set = function()
+M.setup = function()
     for option, value in pairs(options) do
         vim.opt[option] = value
     end

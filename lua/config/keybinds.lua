@@ -4,6 +4,7 @@ local M = {}
 M.Groups = {
     lsp = { key = 'l', desc = '[L]sp' },
     find = { key = 'f', desc = '[F]ind' },
+    hop = { key = '<leader>', desc = '[H]op'},
 }
 
 --@type group M.Groups
@@ -12,6 +13,9 @@ M.Groups = {
 --@type desc string
 function M.group_bind(group, key, fn, desc)
     return { '<leader>' .. group.key .. key, fn, desc = desc or "" }
+end
+
+function M.setup()
 end
 
 -- add enum functions for convenience

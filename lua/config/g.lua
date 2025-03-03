@@ -5,7 +5,7 @@ local globals = {
 
 local M = {}
 
-M.set = function()
+M.setup = function()
     for option, value in pairs(globals) do
         vim.g[option] = value
     end
