@@ -13,6 +13,7 @@ local options = {
     cursorline = true,
     scrolloff = 10,
     showmode = false,
+    winborder = "rounded",
 }
 
 local M = {}

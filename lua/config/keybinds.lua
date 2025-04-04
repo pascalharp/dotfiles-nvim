@@ -1,9 +1,11 @@
 local default_opts = {
+--    mode = "n",
     silent = true,
     noremap = true,
 }
 
--- Core, non plugins speciic, keybinds
+-- Core, non plugins specific, keybinds
+-- // TODO redo this
 local binds = {
     -- swap between windows
     { lhs = '<C-h>', rhs = '<C-w>h' },
@@ -18,20 +20,63 @@ local binds = {
 
 local M = {}
 
--- Keybind Groups accessed thorough leader
+-- Keybind Groups accessed through leader
 M.Groups = {
+    root = { key = '', desc = 'root' },
     lsp = { key = 'l', desc = '[L]sp' },
     find = { key = 'f', desc = '[F]ind' },
     hop = { key = '<leader>', desc = '[H]op' },
     window = { key = 'w', desc = '[W]indows'},
 }
-
---@type group M.Groups
---@type key string
---@type fn function
---@type desc string
-function M.group_bind(group, key, fn, desc, mode)
+function M.group_bind(group, key, fn, mode, desc)
     return { '<leader>' .. group.key .. key, fn, mode = mode or 'n', desc = desc or "" }
+end
+
+function M.group_gen_from_tbl(group, tbl)
+    tbl[1] = '<leader>' .. group.key .. tbl[1]
+end
+
+function M.group_gen_from_fn(group, lhs, rhs, desc, opts)
+    local params
+    params[1] = '<leader>' .. group.key .. lhs
+    params[2] = rhs
+    params['desc'] = desc or ''
+    if opts ~= nil then
+        for k, v in pairs(opts) do
+            params[k] = v
+        end
+    end
+    return params
+end
+
+function M.group_gen(group, ...)
+    local args = {...}
+    local argCount = #args
+    local params = {}
+    if argCount == 1 and type(args[1]) == "table" then
+        params = M.g
+    elseif type(args[1]) == "string" then
+        params[1] = args[1]
+        params[2] = args[2] or ':lua print("no rhs for keybind")'
+    end
+    return vim.tbl_extend('force', default_opts, params)
+end
+
+-- sets they keybind.
+-- Prefers setting via which-key
+-- Fallback to core nvim api
+function M.set(tbl)
+    local ok, wk = pcall(require("which-key"))
+    if ok then
+        -- let which-key handle it
+        wk.add(tbl)
+    else
+        -- transform to nvim api
+        local lhs = tbl[1] or tbl["lhs"] or error("No lhs specified")
+        local rhs = tbl[2] or tbl["rhs"] or error("No rhs specified")
+        local mode = tbl["mode"] or "n"
+        vim.keymap.set(mode, lhs, rhs, tbl)
+    end
 end
 
 -- setup core keybinds
@@ -60,6 +105,9 @@ end
 for _, group in pairs(M.Groups) do
     group.bind = function(self, key, fn, desc, mode)
         return M.group_bind(self, key, fn, desc, mode)
+    end
+    group.gen = function(self, ...)
+        return M.group_gen(self, ...)
     end
     group.spec = function(self)
         return { '<leader>' .. self.key, desc = self.desc }
