@@ -20,25 +20,33 @@ local binds = {
 
 local M = {}
 
--- Keybind Groups accessed through leader
+-- Keybind Groups
+-- These should have which key tbl setup
 M.Groups = {
-    root = { key = '', desc = 'root' },
-    lsp = { key = 'l', desc = '[L]sp' },
-    find = { key = 'f', desc = '[F]ind' },
-    hop = { key = '<leader>', desc = '[H]op' },
-    window = { key = 'w', desc = '[W]indows'},
+    root = { '<leader>', group = 'root' },
+    lsp = {
+        '<leader>l',
+        group = '[L]sp',
+        cond = function ()
+            return true
+        end},
+    find = { '<leader>f', group = '[F]ind' },
+    flash = { '<leader><leader>', group = 'Flash' },
+    window = { '<leader>w', group = '[W]indows'},
 }
+
 function M.group_bind(group, key, fn, mode, desc)
-    return { '<leader>' .. group.key .. key, fn, mode = mode or 'n', desc = desc or "" }
+    return { group[1] .. key, fn, mode = mode or 'n', desc = desc or "" }
 end
 
-function M.group_gen_from_tbl(group, tbl)
-    tbl[1] = '<leader>' .. group.key .. tbl[1]
+function M.group_gen_from_tbl(group, params)
+    params[1] = group[1] .. params[1]
+    return params
 end
 
 function M.group_gen_from_fn(group, lhs, rhs, desc, opts)
-    local params
-    params[1] = '<leader>' .. group.key .. lhs
+    local params = {}
+    params[1] = group[1] .. lhs
     params[2] = rhs
     params['desc'] = desc or ''
     if opts ~= nil then
@@ -54,10 +62,13 @@ function M.group_gen(group, ...)
     local argCount = #args
     local params = {}
     if argCount == 1 and type(args[1]) == "table" then
-        params = M.g
+        params = M.group_gen_from_tbl(group, args)
     elseif type(args[1]) == "string" then
-        params[1] = args[1]
-        params[2] = args[2] or ':lua print("no rhs for keybind")'
+        lhs = args[1] or error("Empty left-hand side")
+        rhs = args[2] or ':lua print("no rhs for keybind")'
+        desc = args[3] or ''
+        opts = args[4] or {}
+        params = M.group_gen_from_fn(group, lhs, rhs, desc, opts)
     end
     return vim.tbl_extend('force', default_opts, params)
 end
@@ -110,7 +121,11 @@ for _, group in pairs(M.Groups) do
         return M.group_gen(self, ...)
     end
     group.spec = function(self)
-        return { '<leader>' .. self.key, desc = self.desc }
+        local tbl = vim.deepcopy(self)
+        tbl.bind = nil
+        tbl.gen = nil
+        tbl.spec = nil
+        return tbl
     end
 end
 

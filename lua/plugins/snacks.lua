@@ -5,22 +5,23 @@ local root     = kb.Groups.root
 
 local keybinds = {
     -- find
-    find:bind('f', function() Snacks.picker.files() end, "[F]iles"),
-    find:bind('g', function() Snacks.picker.grep() end, "[G]rep"),
-    find:bind('b', function() Snacks.picker.buffers() end, "[B]uffers"),
-    find:bind('c', function() Snacks.picker.command_history() end, "[C]ommand history"),
-    find:bind('C', function() Snacks.picker.commands() end, "[C]ommands"),
-    find:bind('j', function() Snacks.picker.jumps() end, "[J]umplist"),
-    find:bind('k', function() Snacks.picker.keymaps() end, "[k]keymaps"),
-    find:bind('H', function() Snacks.picker.help() end, "[H]help"),
-    find:bind('m', function() Snacks.picker.marks() end, "[M]arks"),
-    find:bind('i', function() Snacks.picker.icons() end, "[I]cons"),
+    find:gen('f', function() Snacks.picker.files() end, "[F]iles"),
+    find:gen('g', function() Snacks.picker.grep() end, "[G]rep"),
+    find:gen('b', function() Snacks.picker.buffers() end, "[B]uffers"),
+    find:gen('c', function() Snacks.picker.command_history() end, "[C]ommand history"),
+    find:gen('C', function() Snacks.picker.commands() end, "[C]ommands"),
+    find:gen('j', function() Snacks.picker.jumps() end, "[J]umplist"),
+    find:gen('k', function() Snacks.picker.keymaps() end, "[k]keymaps"),
+    find:gen('H', function() Snacks.picker.help() end, "[H]help"),
+    find:gen('m', function() Snacks.picker.marks() end, "[M]arks"),
+    find:gen('i', function() Snacks.picker.icons() end, "[I]cons"),
+    find:gen('p', function() Snacks.picker() end, "[P]icker"),
     -- LSP
-    lsp:bind('r', function() Snacks.picker.lsp_references() end, "[R]eferences"),
-    lsp:bind('d', function() Snacks.picker.lsp_definitions() end, "[D]efinitions"),
-    lsp:bind('D', function() Snacks.picker.lsp_declarations() end, "[D]eclarations"),
+    lsp:gen('r', function() Snacks.picker.lsp_references() end, "[R]eferences"),
+    lsp:gen('d', function() Snacks.picker.lsp_definitions() end, "[D]efinitions"),
+    lsp:gen('D', function() Snacks.picker.lsp_declarations() end, "[D]eclarations"),
     -- explorer
-    root:bind('\\', function() Snacks.explorer() end, "Explorer"),
+    root:gen('\\', function() Snacks.explorer() end, "Explorer"),
 }
 
 return {
