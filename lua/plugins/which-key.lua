@@ -9,7 +9,7 @@ end
 
 return {
   "folke/which-key.nvim",
-  event = "VeryLazy",
+  lazy = true,
   opts = {
     preset = "modern",
     spec = gen_specs()

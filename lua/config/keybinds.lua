@@ -1,21 +1,13 @@
+-- Utility file to set keybinds
+-- Attempts to combine the different approaches for
+-- - vim.keybinds.set
+-- - which-key add
+-- - lazy keys
+
 local default_opts = {
 --    mode = "n",
     silent = true,
     noremap = true,
-}
-
--- Core, non plugins specific, keybinds
--- // TODO redo this
-local binds = {
-    -- swap between windows
-    { lhs = '<C-h>', rhs = '<C-w>h' },
-    { lhs = '<C-j>', rhs = '<C-w>j' },
-    { lhs = '<C-k>', rhs = '<C-w>k' },
-    { lhs = '<C-l>', rhs = '<C-w>l' },
-    -- split windows
-    {lhs = '<leader>wv', rhs = '<cmd>vsplit<cr>', opts = { desc = '[V]ertical split'}},
-    {lhs = '<leader>wh', rhs = '<cmd>split<cr>', opts = { desc = '[H]orizontal split'}},
-    {lhs = '<leader>wq', rhs = '<cmd>q<cr>', opts = { desc = '[Q]uit window'}},
 }
 
 local M = {}
@@ -62,7 +54,7 @@ function M.group_gen(group, ...)
     local argCount = #args
     local params = {}
     if argCount == 1 and type(args[1]) == "table" then
-        params = M.group_gen_from_tbl(group, args)
+        params = M.group_gen_from_tbl(group, args[1])
     elseif type(args[1]) == "string" then
         lhs = args[1] or error("Empty left-hand side")
         rhs = args[2] or ':lua print("no rhs for keybind")'
@@ -86,14 +78,8 @@ function M.set(tbl)
         local lhs = tbl[1] or tbl["lhs"] or error("No lhs specified")
         local rhs = tbl[2] or tbl["rhs"] or error("No rhs specified")
         local mode = tbl["mode"] or "n"
-        vim.keymap.set(mode, lhs, rhs, tbl)
-    end
-end
-
--- setup core keybinds
-function M.setup()
-    for _, v in pairs(binds) do
-        M.set_from_dict(v)
+        local desc = tbl["desc"] or ""
+        vim.keymap.set(mode, lhs, rhs, { desc = desc })
     end
 end
 

@@ -4,12 +4,6 @@ require("config.g").setup()
 -- Load vim.opt
 require('config.opt').setup()
 
--- Load kyebinds
-require('config.keybinds').setup()
-
--- Load lsp configs
-require('config.lsp').setup()
-
 -- Check for lazy.nvim
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -25,3 +19,9 @@ vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
     { import = 'plugins' }
 })
+
+-- Load windows/split config
+require("config.windows").setup()
+
+-- Load lsp configs
+require('config.lsp').setup()
