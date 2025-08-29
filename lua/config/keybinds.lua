@@ -25,6 +25,8 @@ M.Groups = {
     find = { '<leader>f', group = '[F]ind' },
     flash = { '<leader><leader>', group = 'Flash' },
     window = { '<leader>w', group = '[W]indows'},
+    settings = { '<leader>s', group = '[S]ettings'},
+    toggle = { '<leader>t', group = '[T]oggle'},
 }
 
 function M.group_bind(group, key, fn, mode, desc)

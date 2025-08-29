@@ -1,28 +1,28 @@
-local kb       = require('config.keybinds')
-local find     = kb.Groups.find
-local lsp      = kb.Groups.lsp
-local root     = kb.Groups.root
+local function keybinds()
+  local kb     = require('config.keybinds')
+  local find   = kb.Groups.find
+  local root   = kb.Groups.root
+  local snacks = require('snacks')
 
-local keybinds = {
+  return {
     -- find
-    find:gen('f', function() Snacks.picker.files() end, "[F]iles"),
-    find:gen('g', function() Snacks.picker.grep() end, "[G]rep"),
-    find:gen('b', function() Snacks.picker.buffers() end, "[B]uffers"),
-    find:gen('c', function() Snacks.picker.command_history() end, "[C]ommand history"),
-    find:gen('C', function() Snacks.picker.commands() end, "[C]ommands"),
-    find:gen('j', function() Snacks.picker.jumps() end, "[J]umplist"),
-    find:gen('k', function() Snacks.picker.keymaps() end, "[k]keymaps"),
-    find:gen('H', function() Snacks.picker.help() end, "[H]help"),
-    find:gen('m', function() Snacks.picker.marks() end, "[M]arks"),
-    find:gen('i', function() Snacks.picker.icons() end, "[I]cons"),
-    find:gen('p', function() Snacks.picker() end, "[P]icker"),
-    -- LSP
-    lsp:gen('r', function() Snacks.picker.lsp_references() end, "[R]eferences"),
-    lsp:gen('d', function() Snacks.picker.lsp_definitions() end, "[D]efinitions"),
-    lsp:gen('D', function() Snacks.picker.lsp_declarations() end, "[D]eclarations"),
+    find:gen('f', function() snacks.picker.files() end, "[F]iles"),
+    find:gen('g', function() snacks.picker.grep() end, "[G]rep"),
+    find:gen('b', function() snacks.picker.buffers() end, "[B]uffers"),
+    find:gen('c', function() snacks.picker.command_history() end, "[C]ommand history"),
+    find:gen('C', function() snacks.picker.commands() end, "[C]ommands"),
+    find:gen('j', function() snacks.picker.jumps() end, "[J]umplist"),
+    find:gen('k', function() snacks.picker.keymaps() end, "[k]keymaps"),
+    find:gen('H', function() snacks.picker.help() end, "[H]help"),
+    find:gen('m', function() snacks.picker.marks() end, "[M]arks"),
+    find:gen('i', function() snacks.picker.icons() end, "[I]cons"),
+    find:gen('p', function() snacks.picker() end, "[P]icker"),
     -- explorer
-    root:gen('\\', function() Snacks.explorer() end, "Explorer"),
-}
+    root:gen('\\', function() snacks.explorer() end, "Explorer"),
+    -- terminal
+    root:gen('t<cr>', function() snacks.terminal.toggle() end, "Toggle Terminal"),
+  }
+end
 
 return {
   "folke/snacks.nvim",
@@ -44,6 +44,7 @@ return {
     scope = { enabled = true },
     scroll = { enabled = true },
     statuscolumn = { enabled = true },
+    terminal = { enabled = true },
   },
   keys = keybinds,
 }

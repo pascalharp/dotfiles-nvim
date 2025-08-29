@@ -20,6 +20,9 @@ require('lazy').setup({
     { import = 'plugins' }
 })
 
+-- Load diagnostics
+require('config.diagnostic').setup()
+
 -- Load windows/split config
 require("config.windows").setup()
 

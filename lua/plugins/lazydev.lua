@@ -12,9 +12,5 @@ return {
         cmp = false,
         coc = false,
       },
-      enabled = function (root)
-        local exists, err = vim.uv.fs_access(root .. '/init.vim', 'F')
-        return exists
-      end
     },
 }
