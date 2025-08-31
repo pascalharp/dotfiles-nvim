@@ -1,17 +1,19 @@
-local gen_specs = function()
-  local kb = require('config.keybinds')
-  local specs = {}
-  for _, val in pairs(kb.Groups) do
-    table.insert(specs, val:spec())
-  end
-  return specs
-end
-
 return {
-  "folke/which-key.nvim",
-  lazy = true,
-  opts = {
-    preset = "helix",
-    spec = gen_specs()
-  },
+	src = "https://github.com/folke/which-key.nvim",
+	data = {
+		setup = function()
+			local wk = require("which-key")
+			wk.setup({
+				preset = "modern"
+			})
+			local kb = require("utils/keybinds")
+			for _,v in pairs(kb) do
+				if type(v) == "table" then
+					wk.add( { v.prefix, group = v.name } )
+				end
+			end
+
+			kb.root:set("n", "?", function() wk.show( { global = false }) end, { desc = "Buffer local maps" })
+		end
+	}
 }

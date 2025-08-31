@@ -1,5 +1,3 @@
-local fkb = require("config.keybinds").Groups.flash
-
 local function jump_line(forward)
   require("flash").jump({
     search = {
@@ -12,9 +10,6 @@ local function jump_line(forward)
     pattern = "^"
   })
 end
-
-local function jump_line_forward() jump_line(true) end
-local function jump_line_backward() jump_line(false) end
 
 ---@param opts Flash.Format
 local function format(opts)
@@ -66,26 +61,29 @@ local function two_word_jump(forward)
   })
 end
 
-local function two_word_jump_forward() two_word_jump(true) end
-local function two_word_jump_backward() two_word_jump(false) end
+
+local function setup_binds()
+	local kb = require("utils/keybinds")
+	local flash = require("flash")
+
+	kb.flash:set( {"n", "v"}, "<leader>", function() flash.jump() end, { desc = "Jump" })
+	kb.flash:set( {"n", "v"}, "j", function() jump_line(true) end, { desc = "Lines forward" })
+	kb.flash:set( {"n", "v"}, "k", function() jump_line(false) end, { desc = "Lines backward" })
+	kb.flash:set( {"n", "v"}, "w", function() two_word_jump(true) end, { desc = "Word" })
+end
 
 return {
-  "folke/flash.nvim",
-  event = "VeryLazy",
-  ---@type Flash.Config
-  opts = {
-    modes = {
-      search = {
-        enabled = true
-      }
-    }
-  },
-  keys = {
-    fkb:gen('j', jump_line_forward, " Line Jump"),
-    fkb:gen('k', jump_line_backward, " Line Jump"),
-    fkb:gen('w', two_word_jump_forward, "󰁔 Word Jump"),
-    fkb:gen('b', two_word_jump_backward, "󰁍 Word Jump"),
-    fkb:gen('<leader>', function () require('flash').jump() end, "Search"),
-    { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-  },
+	src = "https://github.com/folke/flash.nvim",
+	data = {
+		setup = function()
+			local flash = require("flash")
+			flash.setup({
+				modes = {
+					search = { enabled = true }
+				}
+			})
+			setup_binds()
+		end
+	}
 }
+
