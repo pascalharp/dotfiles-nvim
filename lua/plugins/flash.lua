@@ -70,6 +70,7 @@ local function setup_binds()
 	kb.flash:set( {"n", "v"}, "j", function() jump_line(true) end, { desc = "Lines forward" })
 	kb.flash:set( {"n", "v"}, "k", function() jump_line(false) end, { desc = "Lines backward" })
 	kb.flash:set( {"n", "v"}, "w", function() two_word_jump(true) end, { desc = "Word" })
+	kb.core:set(  {"n", "v"}, "<C-Space>", function () flash.jump() end, { desc = "Jump" })
 end
 
 return {

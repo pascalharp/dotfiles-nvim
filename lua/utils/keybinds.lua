@@ -1,27 +1,25 @@
-
-
 local KeybindGroup = {}
 KeybindGroup.__index = KeybindGroup
 
 function KeybindGroup:new(prefix, name, opts)
-	local new_group = {
-		prefix = prefix,
-		name = name or prefix,
-		opts = opts or {}
-	}
-	setmetatable(new_group, self)
-	return new_group
+  local new_group = {
+    prefix = prefix,
+    name = name or prefix,
+    opts = opts or {}
+  }
+  setmetatable(new_group, self)
+  return new_group
 end
 
 function KeybindGroup:set(mode, lhs, rhs, opts)
-	local final_lhs = self.prefix .. lhs
-	local final_opts = vim.tbl_deep_extend("force", self.opts, opts or {})
-	vim.keymap.set(mode, final_lhs, rhs, final_opts)
+  local final_lhs = self.prefix .. lhs
+  local final_opts = vim.tbl_deep_extend("force", self.opts, opts or {})
+  vim.keymap.set(mode, final_lhs, rhs, final_opts)
 end
 
 local default_opts = {
-	noremap = true,
-	silent = true,
+  noremap = true,
+  silent = true,
 }
 
 local M = {}

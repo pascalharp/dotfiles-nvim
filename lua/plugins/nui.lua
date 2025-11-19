@@ -1,3 +1,3 @@
 return {
-	src = "https://github.com/MunifTanjim/nui.nvim"
+  src = "https://github.com/MunifTanjim/nui.nvim"
 }
