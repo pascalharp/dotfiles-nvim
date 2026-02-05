@@ -3,6 +3,7 @@ local M = {}
 local lsp_list = {
   "lua_ls",
   "rust_analyzer",
+  "tinymist",
 }
 
 function M:setup()
